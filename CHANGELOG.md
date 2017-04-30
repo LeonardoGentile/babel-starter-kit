@@ -1,5 +1,7 @@
 ## Babel Starter Kit Change Log
 
+#NOTE: if using semantic-release this file is not necessary. Can be deleted!
+
 All notable changes to this project will be documented in this file.
 
 ### [Unreleased][unreleased]

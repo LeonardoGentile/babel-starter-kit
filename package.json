@@ -1,10 +1,15 @@
 {
-  "private": true,
   "name": "babel-starter-kit",
-  "version": "0.0.0",
+  "version": "0.0.0-development",
   "description": "A project template for authoring and publishing JavaScript libraries",
   "homepage": "https://www.kriasoft.com/babel-starter-kit/",
-  "repository": "kriasoft/babel-starter-kit",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LeonardoGentile/babel-starter-kit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LeonardoGentile/babel-starter-kit/issues"
+  },
   "author": "Kriasoft <hello@kriasoft.com> (https://www.kriasoft.com)",
   "contributors": [
     "Konstantin Tarkus <hello@tarkus.me>",
@@ -12,53 +17,79 @@
   ],
   "license": "MIT",
   "keywords": [],
-  "main": "index.js",
-  "jsnext:main": "index.es.js",
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "LICENSE.txt"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
   "babel": {
+    "comments": false,
     "presets": [
       "latest",
       "stage-0"
     ],
     "plugins": [
-      "transform-runtime"
+      "transform-runtime",
+      "transform-decorators-legacy"
     ]
-  },
-  "eslintConfig": {
-    "parser": "babel-eslint",
-    "extends": "airbnb-base"
   },
   "dependencies": {
     "babel-runtime": "^6.11.6"
   },
+  "peerDependencies": {},
   "devDependencies": {
     "babel-cli": "^6.16.0",
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.0.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-preset-latest": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
     "babel-register": "^6.16.3",
-    "chai": "^4.0.0-canary.1",
+    "chai": "^3.5.0",
+    "commitizen": "2.9.6",
     "coveralls": "^2.11.14",
+    "cz-conventional-changelog": "2.0.0",
     "del": "^2.2.2",
-    "eslint": "^3.8.0",
+    "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "^10.0.1",
     "eslint-plugin-import": "^2.2.0",
     "istanbul": "^1.1.0-alpha.1",
     "mocha": "^3.1.2",
-    "rollup": "^0.36.3",
-    "rollup-plugin-babel": "^2.6.1",
-    "sinon": "^2.0.0-pre.3"
+    "rollup": "^0.41.6",
+    "rollup-plugin-babel": "^2.7.1",
+    "semantic-release": "^6.3.2",
+    "semantic-release-conventional-commits": "1.0.2",
+    "sinon": "^2.0.0-pre.3",
+    "sinon-chai": "^2.9.0"
   },
   "scripts": {
+    "commit": "git-cz",
     "lint": "eslint src test tools",
-    "test": "mocha --compilers js:babel-register",
-    "test:watch": "mocha --compilers js:babel-register --reporter min --watch",
-    "test:cover": "babel-node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha",
+    "test": "mocha --compilers js:babel-register --require ./test/utils/test-setup.js 'test/*.js'",
+    "test:watch": "mocha --compilers js:babel-register --require ./test/utils/test-setup.js --reporter min --watch 'test/*.js'",
+    "test:cover": "babel-node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --require ./test/utils/test-setup.js 'test/*.js'",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "build": "node tools/build",
-    "prepublish": "npm run build",
     "publish:docs": "easystatic deploy docs --repo kriasoft/babel-starter-kit",
-    "start": "easystatic start docs"
+    "start": "easystatic start docs",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "release": {
+    "analyzeCommits": {
+      "path": "semantic-release-conventional-commits",
+      "minorTypes": ["feat", "minor"],
+      "patchTypes": ["fix", "patch", "docs", "refactor", "style", "perf"]
+    }
   }
 }
